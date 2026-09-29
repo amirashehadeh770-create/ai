@@ -21,9 +21,10 @@ npx prisma db seed       # seeds 3 demo stores, admins, and products
 npm run dev
 ```
 
-Open http://localhost:3000 — you'll see 3 demo stores: **Urban Threads**, **GreenLeaf
-Grocer**, and **TechNest**. Admin login credentials for each store are written to
-`SEED_CREDENTIALS.md` after seeding (also printed to the console).
+Open [http://localhost:3000](http://localhost:3000) — you'll see 3 demo stores:
+**Urban Threads**, **GreenLeaf Grocer**, and **TechNest**. Admin login credentials for
+each store are written to `SEED_CREDENTIALS.md` after seeding (also printed to the
+console).
 
 ## Environment variables
 

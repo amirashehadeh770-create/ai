@@ -30,6 +30,9 @@ export function StoreHeader({ storeSlug, storeName, logoUrl, accentColor }: Stor
           <span className="font-semibold tracking-tight text-neutral-900">{storeName}</span>
         </Link>
         <nav className="flex items-center gap-5 text-sm font-medium text-neutral-600">
+          <Link href={`/store/${storeSlug}`} className="hover:text-neutral-900">
+            Website
+          </Link>
           <Link href="/" className="hover:text-neutral-900">
             All stores
           </Link>

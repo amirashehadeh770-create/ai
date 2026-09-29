@@ -42,7 +42,7 @@ export default async function AdminStoreLayout({
               Orders
             </Link>
             <Link href={`/store/${storeSlug}`} className="hover:text-neutral-900">
-              View storefront
+              Website
             </Link>
             <SignOutButton />
           </nav>
