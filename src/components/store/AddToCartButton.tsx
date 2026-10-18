@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useCartStore } from "@/lib/cart-store";
+import { useI18n } from "@/components/i18n/I18nProvider";
 
 type AddToCartButtonProps = {
   storeSlug: string;
@@ -28,6 +29,7 @@ export function AddToCartButton({
   const addItem = useCartStore((state) => state.addItem);
   const [added, setAdded] = useState(false);
   const router = useRouter();
+  const { t } = useI18n();
 
   if (!inStock) {
     return (
@@ -35,7 +37,7 @@ export function AddToCartButton({
         disabled
         className="w-full cursor-not-allowed rounded-md bg-neutral-200 px-4 py-2.5 text-sm font-semibold text-neutral-500"
       >
-        Out of stock
+        {t.product.outOfStock}
       </button>
     );
   }
@@ -51,7 +53,7 @@ export function AddToCartButton({
       style={{ backgroundColor: accentColor }}
       className="w-full rounded-md px-4 py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
     >
-      {added ? "Added ✓" : "Add to cart"}
+      {added ? t.product.added : t.product.addToCart}
     </button>
   );
 }

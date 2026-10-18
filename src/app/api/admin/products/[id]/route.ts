@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
+import { Prisma } from "@/generated/prisma/client";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { ALLOWED_IMAGE_HOSTS, isAllowedImageUrl } from "@/lib/allowed-image-hosts";
 
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const session = await auth();
@@ -24,6 +26,15 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     if (!category) {
       return NextResponse.json({ error: "Invalid category" }, { status: 400 });
     }
+  }
+
+  if (imageUrl != null && !isAllowedImageUrl(imageUrl)) {
+    return NextResponse.json(
+      {
+        error: `Image URL must be an https:// URL from one of: ${ALLOWED_IMAGE_HOSTS.join(", ")}`,
+      },
+      { status: 400 }
+    );
   }
 
   const product = await prisma.product.update({
@@ -53,7 +64,17 @@ export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ 
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
-  await prisma.product.delete({ where: { id } });
+  try {
+    await prisma.product.delete({ where: { id } });
+  } catch (err) {
+    if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2003") {
+      return NextResponse.json(
+        { error: "This product has existing orders and can't be deleted." },
+        { status: 409 }
+      );
+    }
+    throw err;
+  }
 
   return NextResponse.json({ success: true });
 }

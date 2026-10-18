@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { ALLOWED_IMAGE_HOSTS, isAllowedImageUrl } from "@/lib/allowed-image-hosts";
 
 function slugify(input: string) {
   return input
@@ -21,6 +22,15 @@ export async function POST(req: NextRequest) {
 
   if (!name || !description || priceCents == null || !imageUrl) {
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+  }
+
+  if (!isAllowedImageUrl(imageUrl)) {
+    return NextResponse.json(
+      {
+        error: `Image URL must be an https:// URL from one of: ${ALLOWED_IMAGE_HOSTS.join(", ")}`,
+      },
+      { status: 400 }
+    );
   }
 
   if (categoryId) {

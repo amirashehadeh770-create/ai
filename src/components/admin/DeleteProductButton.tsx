@@ -15,7 +15,8 @@ export function DeleteProductButton({ productId }: { productId: string }) {
     if (res.ok) {
       router.refresh();
     } else {
-      alert("Failed to delete product");
+      const data = await res.json().catch(() => null);
+      alert(data?.error ?? "Failed to delete product");
     }
   }
 

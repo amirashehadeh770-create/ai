@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { ALLOWED_IMAGE_HOSTS } from "@/lib/allowed-image-hosts";
 
 type Category = { id: string; name: string };
 
@@ -125,6 +126,9 @@ export function ProductForm({ storeSlug, categories, product }: ProductFormProps
           onChange={(e) => setImageUrl(e.target.value)}
           className="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm"
         />
+        <p className="mt-1 text-xs text-neutral-400">
+          Must be an https:// URL from: {ALLOWED_IMAGE_HOSTS.join(", ")}
+        </p>
       </div>
 
       <div>

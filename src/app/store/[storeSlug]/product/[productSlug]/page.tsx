@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { getStoreBySlug } from "@/lib/store-data";
 import { formatPrice } from "@/lib/format";
 import { AddToCartButton } from "@/components/store/AddToCartButton";
+import { getI18n, tf } from "@/lib/i18n";
 
 export const dynamic = "force-dynamic";
 
@@ -23,13 +24,17 @@ export default async function ProductPage({
   });
   if (!product) notFound();
 
+  const { t } = await getI18n();
+
   return (
-    <div>
+    <div className="mx-auto w-full max-w-6xl px-6 py-10">
       <Link
         href={`/store/${storeSlug}`}
         className="mb-6 inline-block text-sm font-medium text-neutral-500 hover:text-neutral-900"
       >
-        ← Back to {store.name}
+        <span className="rtl:hidden">← </span>
+        {tf(t.product.backToStore, { store: store.name })}
+        <span className="hidden rtl:inline"> →</span>
       </Link>
 
       <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
@@ -54,7 +59,9 @@ export default async function ProductPage({
           </p>
           <p className="mt-4 text-neutral-600">{product.description}</p>
           <p className="mt-2 text-sm text-neutral-400">
-            {product.stock > 0 ? `${product.stock} in stock` : "Out of stock"}
+            {product.stock > 0
+              ? tf(t.product.inStock, { count: product.stock })
+              : t.product.outOfStock}
           </p>
 
           <div className="mt-6 max-w-xs">

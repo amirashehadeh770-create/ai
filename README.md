@@ -7,7 +7,7 @@ own store's data — while all stores share one landing page and platform shell.
 ## Stack
 
 - Next.js 16 (App Router) + TypeScript + Tailwind CSS
-- Prisma ORM + SQLite (`dev.db`)
+- Prisma ORM + PostgreSQL
 - Auth.js / NextAuth v5 (credentials login, one admin per store)
 - Zustand (client-side cart, persisted per store in `localStorage`)
 - Stripe Checkout (test mode)
@@ -16,13 +16,13 @@ own store's data — while all stores share one landing page and platform shell.
 
 ```bash
 npm install
-npx prisma migrate dev   # creates dev.db and applies the schema
-npx prisma db seed       # seeds 3 demo stores, admins, and products
+npx prisma migrate dev   # applies the schema to your Postgres database
+npx prisma db seed       # seeds 2 demo stores, admins, and products
 npm run dev
 ```
 
-Open http://localhost:3000 — you'll see 3 demo stores: **Urban Threads**, **GreenLeaf
-Grocer**, and **TechNest**. Admin login credentials for each store are written to
+Open http://localhost:3000 — you'll see 2 demo stores: **Redline Auto** (car parts) and
+**Throttle Moto** (motorcycle gear). Admin login credentials for each store are written to
 `SEED_CREDENTIALS.md` after seeding (also printed to the console).
 
 ## Environment variables
@@ -37,13 +37,13 @@ Copy `.env.local.example` to `.env.local` and fill in:
 - `STRIPE_WEBHOOK_SECRET` — run `stripe listen --forward-to localhost:3000/api/webhooks/stripe`
   locally with the [Stripe CLI](https://stripe.com/docs/stripe-cli) and use the secret it prints.
 
-`DATABASE_URL` is already set in `.env` (SQLite, file-based, no setup needed).
+`DATABASE_URL` must point to a Postgres database (e.g. Neon, Supabase, or Vercel Postgres) — set it in `.env`.
 
 ## How the stores stay separate
 
 Every store-owned table (`Product`, `Category`, `Order`, `OrderItem`, `AdminUser`) carries
 a `storeId`, and every query — public and admin — filters by it. Admin sessions carry the
-signed-in admin's `storeId`/`storeSlug`; `middleware.ts` and each `/admin/[storeSlug]/*`
+signed-in admin's `storeId`/`storeSlug`; `src/proxy.ts` and each `/admin/[storeSlug]/*`
 layout both check that the URL's store matches the session's store, so one store's admin
 can never view or edit another store's data.
 
@@ -58,6 +58,6 @@ can never view or edit another store's data.
 
 ## Adding a new store
 
-There's no UI for creating stores yet (this is a demo with 3 fixed stores). To add one,
+There's no UI for creating stores yet (this is a demo with 2 fixed stores). To add one,
 extend the `stores` array in `prisma/seed.ts` and re-run `npx prisma db seed`, or insert
 directly via `npx prisma studio`.
