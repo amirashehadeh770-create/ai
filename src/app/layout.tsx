@@ -4,6 +4,7 @@ import "./globals.css";
 import { getDictionary, getLocale } from "@/lib/i18n";
 import { localeDir } from "@/lib/i18n/config";
 import { I18nProvider } from "@/components/i18n/I18nProvider";
+import { Analytics } from '@vercel/analytics/next';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,6 +39,7 @@ export default async function RootLayout({
         <I18nProvider locale={locale} dict={dict}>
           {children}
         </I18nProvider>
+        <Analytics />
       </body>
     </html>
   );
