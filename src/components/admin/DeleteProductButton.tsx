@@ -24,7 +24,7 @@ export function DeleteProductButton({ productId }: { productId: string }) {
     <button
       onClick={handleDelete}
       disabled={loading}
-      className="text-sm font-medium text-neutral-400 hover:text-red-600 disabled:opacity-50"
+      className="text-xs font-bold uppercase tracking-wide text-neutral-500 transition hover:text-red-400 disabled:opacity-50"
     >
       Delete
     </button>

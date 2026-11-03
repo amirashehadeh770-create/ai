@@ -7,6 +7,8 @@ import { DeleteProductButton } from "@/components/admin/DeleteProductButton";
 
 export const dynamic = "force-dynamic";
 
+const LOW_STOCK = 5;
+
 export default async function AdminProductsPage({
   params,
 }: {
@@ -23,52 +25,63 @@ export default async function AdminProductsPage({
 
   return (
     <div>
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-neutral-900">Products</h1>
+      <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p className="text-xs font-bold uppercase tracking-[0.3em] text-[var(--accent)]">Catalog</p>
+          <h1 className="mt-1 text-3xl font-extrabold uppercase tracking-tight text-white">Products</h1>
+        </div>
         <Link
           href={`/admin/${storeSlug}/products/new`}
-          className="rounded-md bg-neutral-900 px-4 py-2 text-sm font-semibold text-white hover:bg-neutral-800"
+          className="rounded-md bg-[var(--accent)] px-5 py-2.5 text-sm font-bold uppercase tracking-wide text-white transition hover:opacity-90"
         >
           Add product
         </Link>
       </div>
 
-      <div className="overflow-hidden rounded-lg border border-neutral-200 bg-white">
+      <div className="overflow-x-auto rounded-xl border border-white/10 bg-neutral-900">
         <table className="w-full text-sm">
-          <thead className="border-b border-neutral-200 bg-neutral-50 text-left text-neutral-500">
+          <thead className="border-b border-white/10 text-left text-xs uppercase tracking-wider text-neutral-500">
             <tr>
-              <th className="px-4 py-2 font-medium">Product</th>
-              <th className="px-4 py-2 font-medium">Category</th>
-              <th className="px-4 py-2 font-medium">Price</th>
-              <th className="px-4 py-2 font-medium">Stock</th>
-              <th className="px-4 py-2 font-medium"></th>
+              <th className="px-4 py-3 font-semibold">Product</th>
+              <th className="px-4 py-3 font-semibold">Category</th>
+              <th className="px-4 py-3 font-semibold">Price</th>
+              <th className="px-4 py-3 font-semibold">Stock</th>
+              <th className="px-4 py-3 font-semibold"></th>
             </tr>
           </thead>
           <tbody>
             {products.map((product) => (
-              <tr key={product.id} className="border-b border-neutral-100 last:border-0">
-                <td className="px-4 py-2">
+              <tr key={product.id} className="border-b border-white/5 last:border-0 hover:bg-white/[0.03]">
+                <td className="px-4 py-3">
                   <div className="flex items-center gap-3">
                     <Image
                       src={product.imageUrl}
                       alt={product.name}
-                      width={36}
-                      height={36}
-                      className="h-9 w-9 rounded object-cover"
+                      width={44}
+                      height={44}
+                      className="h-11 w-11 rounded-md object-cover ring-1 ring-white/10"
                     />
-                    <span className="font-medium text-neutral-900">{product.name}</span>
+                    <span className="font-semibold text-white">{product.name}</span>
                   </div>
                 </td>
-                <td className="px-4 py-2 text-neutral-600">
-                  {product.category?.name ?? "—"}
+                <td className="px-4 py-3">
+                  {product.category ? (
+                    <span className="rounded-full bg-white/5 px-2.5 py-0.5 text-xs font-medium uppercase text-neutral-300 ring-1 ring-white/10">
+                      {product.category.name}
+                    </span>
+                  ) : (
+                    <span className="text-neutral-500">—</span>
+                  )}
                 </td>
-                <td className="px-4 py-2 text-neutral-800">{formatPrice(product.priceCents)}</td>
-                <td className="px-4 py-2 text-neutral-600">{product.stock}</td>
-                <td className="px-4 py-2 text-right">
-                  <div className="flex justify-end gap-3">
+                <td className="px-4 py-3 font-semibold text-white">{formatPrice(product.priceCents)}</td>
+                <td className={`px-4 py-3 font-medium ${product.stock <= LOW_STOCK ? "text-[var(--accent)]" : "text-neutral-300"}`}>
+                  {product.stock}
+                </td>
+                <td className="px-4 py-3 text-right">
+                  <div className="flex justify-end gap-4">
                     <Link
                       href={`/admin/${storeSlug}/products/${product.id}/edit`}
-                      className="text-sm font-medium text-neutral-600 hover:text-neutral-900"
+                      className="text-xs font-bold uppercase tracking-wide text-neutral-300 transition hover:text-white"
                     >
                       Edit
                     </Link>
@@ -80,7 +93,7 @@ export default async function AdminProductsPage({
           </tbody>
         </table>
         {products.length === 0 && (
-          <p className="p-4 text-sm text-neutral-500">No products yet.</p>
+          <p className="px-4 py-10 text-center text-sm text-neutral-500">No products yet.</p>
         )}
       </div>
     </div>

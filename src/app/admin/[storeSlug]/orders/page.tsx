@@ -21,26 +21,27 @@ export default async function AdminOrdersPage({
 
   return (
     <div>
-      <h1 className="mb-6 text-2xl font-bold text-neutral-900">Orders</h1>
+      <div className="mb-8">
+        <p className="text-xs font-bold uppercase tracking-[0.3em] text-[var(--accent)]">Sales</p>
+        <h1 className="mt-1 text-3xl font-extrabold uppercase tracking-tight text-white">Orders</h1>
+      </div>
 
       <div className="space-y-4">
         {orders.map((order) => (
-          <div key={order.id} className="rounded-lg border border-neutral-200 bg-white p-4">
+          <div key={order.id} className="rounded-xl border border-white/10 bg-neutral-900 p-5">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div>
-                <p className="font-medium text-neutral-900">{order.customerEmail}</p>
-                <p className="text-xs text-neutral-400">
+                <p className="font-semibold text-white">{order.customerEmail}</p>
+                <p className="text-xs text-neutral-500">
                   {order.createdAt.toLocaleString()} · {order.id}
                 </p>
               </div>
               <div className="flex items-center gap-3">
-                <span className="font-semibold text-neutral-900">
-                  {formatPrice(order.totalCents)}
-                </span>
+                <span className="text-lg font-extrabold text-white">{formatPrice(order.totalCents)}</span>
                 <OrderStatusSelect orderId={order.id} status={order.status} />
               </div>
             </div>
-            <ul className="mt-3 space-y-1 text-sm text-neutral-600">
+            <ul className="mt-4 space-y-1 border-t border-white/5 pt-3 text-sm text-neutral-400">
               {order.items.map((item) => (
                 <li key={item.id}>
                   {item.product.name} × {item.quantity} — {formatPrice(item.priceCents * item.quantity)}
@@ -51,7 +52,10 @@ export default async function AdminOrdersPage({
         ))}
 
         {orders.length === 0 && (
-          <p className="text-sm text-neutral-500">No orders yet.</p>
+          <div className="rounded-xl border border-dashed border-white/15 bg-neutral-900/50 px-4 py-14 text-center">
+            <p className="font-semibold text-white">No orders yet</p>
+            <p className="mt-1 text-sm text-neutral-500">New orders from your storefront will appear here.</p>
+          </div>
         )}
       </div>
     </div>

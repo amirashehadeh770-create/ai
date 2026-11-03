@@ -1,7 +1,8 @@
-import Link from "next/link";
+import Image from "next/image";
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { SignOutButton } from "@/components/admin/SignOutButton";
+import { getStoreBySlug } from "@/lib/store-data";
+import { AdminNav } from "@/components/admin/AdminNav";
 
 export default async function AdminStoreLayout({
   children,
@@ -21,31 +22,39 @@ export default async function AdminStoreLayout({
     notFound();
   }
 
+  const store = await getStoreBySlug(storeSlug);
+  if (!store) notFound();
+
+  const [firstWord, ...restWords] = store.name.split(" ");
+  const rest = restWords.join(" ");
+
   return (
-    <div className="flex min-h-full flex-col">
-      <header className="border-b border-neutral-200 bg-white">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <div>
-            <span className="text-xs font-medium uppercase tracking-wide text-neutral-400">
-              Admin
-            </span>
-            <h1 className="font-semibold text-neutral-900">{session.user.storeName}</h1>
+    <div
+      className="flex min-h-screen flex-col bg-neutral-950 text-neutral-200"
+      style={{ "--accent": store.accentColor } as React.CSSProperties}
+    >
+      <header className="sticky top-0 z-50 border-b border-white/10 bg-neutral-950/90 backdrop-blur">
+        <div className="h-1 w-full bg-[var(--accent)]" />
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-6 py-4">
+          <div className="flex items-center gap-3">
+            <Image
+              src={store.logoUrl}
+              alt={`${store.name} logo`}
+              width={36}
+              height={36}
+              className="h-9 w-9 rounded-full object-cover ring-1 ring-white/15"
+            />
+            <div>
+              <span className="block text-[10px] font-bold uppercase tracking-[0.3em] text-neutral-500">
+                Admin
+              </span>
+              <span className="text-lg font-extrabold uppercase leading-none tracking-widest text-white">
+                <span className="text-[var(--accent)]">{firstWord}</span>
+                {rest ? <span className="font-semibold"> {rest}</span> : null}
+              </span>
+            </div>
           </div>
-          <nav className="flex items-center gap-5 text-sm font-medium text-neutral-600">
-            <Link href={`/admin/${storeSlug}/dashboard`} className="hover:text-neutral-900">
-              Dashboard
-            </Link>
-            <Link href={`/admin/${storeSlug}/products`} className="hover:text-neutral-900">
-              Products
-            </Link>
-            <Link href={`/admin/${storeSlug}/orders`} className="hover:text-neutral-900">
-              Orders
-            </Link>
-            <Link href={`/store/${storeSlug}`} className="hover:text-neutral-900">
-              View storefront
-            </Link>
-            <SignOutButton />
-          </nav>
+          <AdminNav storeSlug={storeSlug} />
         </div>
       </header>
       <main className="mx-auto w-full max-w-6xl flex-1 px-6 py-10">{children}</main>
