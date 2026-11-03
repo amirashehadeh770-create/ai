@@ -21,7 +21,7 @@ npx prisma db seed       # seeds 2 demo stores, admins, and products
 npm run dev
 ```
 
-Open http://localhost:3000 — you'll see 2 demo stores: **Redline Auto** (car parts) and
+Open http://localhost:3000 — you'll see 2 demo stores: **Twin Turbo** (car parts) and
 **Throttle Moto** (motorcycle gear). Admin login credentials for each store are written to
 `SEED_CREDENTIALS.md` after seeding (also printed to the console).
 

@@ -32,7 +32,7 @@ type StoreSeed = {
 const stores: StoreSeed[] = [
   {
     slug: "redline-auto",
-    name: "Redline Auto",
+    name: "Twin Turbo",
     description: "Performance parts and accessories for cars, from stock upgrades to full builds.",
     accentColor: "#dc2626",
     logoUrl: "https://picsum.photos/seed/redline-auto-logo/128/128",
