@@ -23,6 +23,7 @@ type StoreSeed = {
   description: string;
   accentColor: string;
   logoUrl: string;
+  heroImageUrl?: string;
   adminEmail: string;
   adminPassword: string;
   categories: string[];
@@ -36,6 +37,7 @@ const stores: StoreSeed[] = [
     description: "Performance parts and accessories for cars, from stock upgrades to full builds.",
     accentColor: "#dc2626",
     logoUrl: "https://picsum.photos/seed/redline-auto-logo/128/128",
+    heroImageUrl: "/stores/twin-turbo-hero.jpg",
     adminEmail: "admin@redlineauto.test",
     adminPassword: "redlineauto123",
     categories: ["Engine", "Exterior", "Interior"],
@@ -192,6 +194,7 @@ async function main() {
         description: storeSeed.description,
         accentColor: storeSeed.accentColor,
         logoUrl: storeSeed.logoUrl,
+        heroImageUrl: storeSeed.heroImageUrl ?? null,
       },
       create: {
         slug: storeSeed.slug,
@@ -199,6 +202,7 @@ async function main() {
         description: storeSeed.description,
         accentColor: storeSeed.accentColor,
         logoUrl: storeSeed.logoUrl,
+        heroImageUrl: storeSeed.heroImageUrl ?? null,
       },
     });
 

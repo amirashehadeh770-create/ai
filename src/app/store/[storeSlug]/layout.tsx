@@ -22,6 +22,16 @@ export default async function StoreLayout({
 
   return (
     <div className="flex min-h-full flex-col bg-white text-neutral-900">
+      <div className="bg-neutral-950 text-[11px] font-semibold uppercase tracking-wider text-neutral-300">
+        <ul className="mx-auto flex max-w-6xl justify-center gap-8 px-6 py-2 md:justify-between">
+          <li>{t.storeHome.announceShipping}</li>
+          <li className="hidden md:block" style={{ color: store.accentColor }}>
+            {t.storeHome.announceSecure}
+          </li>
+          <li className="hidden md:block">{t.storeHome.announceReturns}</li>
+        </ul>
+      </div>
+
       <StoreHeader
         storeSlug={store.slug}
         storeName={store.name}

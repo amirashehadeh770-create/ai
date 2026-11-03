@@ -11,13 +11,14 @@ datasource db {
 }
 
 model Store {
-  id          String   @id @default(cuid())
-  slug        String   @unique
-  name        String
-  description String
-  accentColor String   @default("#4f46e5")
-  logoUrl     String
-  createdAt   DateTime @default(now())
+  id           String   @id @default(cuid())
+  slug         String   @unique
+  name         String
+  description  String
+  accentColor  String   @default("#4f46e5")
+  logoUrl      String
+  heroImageUrl String?
+  createdAt    DateTime @default(now())
 
   admins     AdminUser[]
   categories Category[]
